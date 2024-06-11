@@ -15,11 +15,11 @@ import os
 from dotenv import load_dotenv
 
 
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_API_KEY"] = "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"
-os.environ["GROQ_API_KEY"] = "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"
-os.environ["LANGCHAIN_PROJECT"] = "DreamGuardTest"
+os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+
 
 ephemeral_chat_history_for_chain = ChatMessageHistory()
 ephemeral_chat_history_2 = ChatMessageHistory()
