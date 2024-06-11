@@ -19,6 +19,7 @@ os.environ["OPENAI_API_KEY"] = "sk-proj-PcBB9a7ON95RaeXsKCyQT3BlbkFJtSQqnK6v0i3B
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = "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"
 os.environ["GROQ_API_KEY"] = "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"
+os.environ["LANGCHAIN_PROJECT"] = "DreamGuardTest"
 
 ephemeral_chat_history_for_chain = ChatMessageHistory()
 ephemeral_chat_history_2 = ChatMessageHistory()
