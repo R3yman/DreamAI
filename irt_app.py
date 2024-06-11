@@ -11,10 +11,10 @@ from prompt_templates import router_template, recording_template, rewriting_temp
 import os
 from dotenv import load_dotenv
 
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+os.environ["OPENAI_API_KEY"] = "sk-proj-pchxuSS2I7FuGN9T3A5vT3BlbkFJUNkAAea8UgHxuLgOPD7u"
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
-os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+os.environ["LANGCHAIN_API_KEY"] = "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"
+os.environ["GROQ_API_KEY"] = "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"
 
 ephemeral_chat_history_for_chain = ChatMessageHistory()
 ephemeral_chat_history_2 = ChatMessageHistory()
