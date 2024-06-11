@@ -1,4 +1,6 @@
 # DreamAI
 This is the LLM part for the Study Project: DreamGuard
 
-To run the program, start the server.py and client.py. You can send messages to the AI via the client.py
+To run the program, create a new conda environment and install the dependencies in the requirements.txt.
+Run the irt_app.py script and start chatting.
+

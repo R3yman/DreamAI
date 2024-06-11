@@ -45,7 +45,6 @@ def route(info):
     else:
         return summary_chain_chat
     
-
 def clean_history(chat_history):
     if len(chat_history.messages) > 1:
         chat_history.messages = chat_history.messages[:-2]
@@ -61,7 +60,6 @@ class PostProcessingRunnable(Runnable):
         chat_history = ephemeral_chat_history_for_chain
         self.post_processing_fn(chat_history)
         return result
-
 
 # Wrap the router chain with message history
 router_chain_chat_history = RunnableWithMessageHistory(
@@ -83,15 +81,13 @@ router_with_history = RunnableWithMessageHistory(
 # Create the PostProcessingRunnable
 post_processing_runnable = PostProcessingRunnable(router_chain_chat_history, clean_history)
 
-#full_chain = {"stage": router_chain_chat, "input": lambda x: x["input"], "transcript": lambda x : x["transcript"]} | router_with_history
-
 #full_chain = {"stage": router_chain_chat_history, "input": lambda x: x["input"]} | router_with_history
 
 # Create the full chain configuration
 full_chain = {"stage": post_processing_runnable, "input": lambda x: x["input"]} | router_with_history
 
 # Chatbot loop
-while True:
+while False:
     user_in = input("User: ")
     response = full_chain.invoke({"input": user_in},
                                  {"configurable": {"session_id": 'unused'}})
@@ -100,5 +96,3 @@ while True:
     print("-----------------------------------------")
     
  
-
-
