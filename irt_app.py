@@ -6,15 +6,14 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.runnables import RunnableLambda, Runnable
 
-from prompt_templates import router_template, recording_template, rewriting_template, summary_template, summary_template_chat
+from prompt_templates import router_template, recording_template, rewriting_template, summary_template
 
 import os
-from dotenv import load_dotenv
 
-os.environ["OPENAI_API_KEY"] = "sk-proj-pchxuSS2I7FuGN9T3A5vT3BlbkFJUNkAAea8UgHxuLgOPD7u"
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_API_KEY"] = "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"
-os.environ["GROQ_API_KEY"] = "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"
+os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
 
 ephemeral_chat_history_for_chain = ChatMessageHistory()
 ephemeral_chat_history_2 = ChatMessageHistory()
@@ -33,8 +32,6 @@ rewriting_chain =  rewriting_template | openAI | StrOutputParser()
 
 summary_chain = summary_template | openAI | StrOutputParser()
 
-summary_chain_chat = summary_template_chat | openAI | StrOutputParser()
-
 
 # Routing function 
 def route(info):
@@ -43,7 +40,7 @@ def route(info):
     elif "rewriting" in info["stage"].lower():
         return rewriting_chain
     else:
-        return summary_chain_chat
+        return summary_chain
     
 def clean_history(chat_history):
     if len(chat_history.messages) > 1:
@@ -81,13 +78,11 @@ router_with_history = RunnableWithMessageHistory(
 # Create the PostProcessingRunnable
 post_processing_runnable = PostProcessingRunnable(router_chain_chat_history, clean_history)
 
-#full_chain = {"stage": router_chain_chat_history, "input": lambda x: x["input"]} | router_with_history
-
 # Create the full chain configuration
 full_chain = {"stage": post_processing_runnable, "input": lambda x: x["input"]} | router_with_history
 
 # Chatbot loop
-while False:
+while True:
     user_in = input("User: ")
     response = full_chain.invoke({"input": user_in},
                                  {"configurable": {"session_id": 'unused'}})
