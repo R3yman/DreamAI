@@ -9,7 +9,7 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.runnables import RunnableLambda, Runnable
 
-from prompt_templates import router_template, recording_template, rewriting_template, summary_template, summary_template_chat
+from prompt_templates import router_template, recording_template, rewriting_template, summary_template
 
 import os
 from dotenv import load_dotenv
