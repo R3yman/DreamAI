@@ -9,10 +9,13 @@ from langchain_core.runnables import RunnableLambda, Runnable
 
 from prompt_templates import router_template, recording_template, rewriting_template, summary_template
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import os
 
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ["LANGCHAIN_TRACING_V2"] = "false"
+os.environ["LANGCHAIN_TRACING_V2"] = "false" #turn to true
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
 
@@ -101,9 +104,15 @@ if prompt := st.chat_input("Message DreamGuard"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    response = full_chain.invoke({"input": prompt}, {"configurable": {"session_id": 'unused'}})
-    # Display assistant response in chat message container
-    with st.chat_message("assistant"):
-        st.markdown(response)
-    # Add assistant response to chat history
-    st.session_state.messages.append({"role": "assistant", "content": response})
+    response_container = st.chat_message("assistant").empty()
+    response_text = ""
+
+    for chunk in full_chain.stream({"input": prompt}, {"configurable": {"session_id": 'unused'}}):
+        response_text += chunk
+        response_container.markdown(response_text + " 🖊️")
+
+    response_container.markdown(response_text)  # Remove the pointer when done
+
+    st.session_state.messages.append({"role": "assistant", "content": response_text})
+
+  
